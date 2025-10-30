@@ -1,0 +1,3 @@
+return function(a)
+  workspace.CurrentCamera.FieldOfView=a
+end

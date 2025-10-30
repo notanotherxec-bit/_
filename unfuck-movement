@@ -1,4 +1,4 @@
 return function()
     local movControl = require(game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
-    if movControl.moveFunction ~= game:GetService("Players").LocalPlayer.Move then movControl.moveFunction = game:GetService("Players").LocalPlayer.Move end
+    if movControl.moveFunction ~= game:GetService("Players").LocalPlayer:Move() then movControl.moveFunction = game:GetService("Players").LocalPlayer:Move() end
 end

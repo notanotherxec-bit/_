@@ -1,4 +1,27 @@
 return function()
-    local movControl = require(game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
-    if movControl.moveFunction ~= game:GetService("Players").LocalPlayer:Move() then movControl.moveFunction = game:GetService("Players").LocalPlayer:Move() end
+    local x = function()
+	local player = game:GetService("Players").LocalPlayer
+	local movControl = require(player:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
+	movControl.moveFunction = function(p, dir, relative)
+		local humanoid = p.Character and p.Character:FindFirstChild("Humanoid")
+		if humanoid then humanoid:Move(dir, relative) end
+	end
+	movControl.moveFunction = function(p, dir, relative)
+		player:Move(-dir, relative)
+	end
+end
+
+local y = function()
+	local player = game:GetService("Players").LocalPlayer
+	local movControl = require(player:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
+	movControl.moveFunction = function(p, dir, relative)
+		local humanoid = p.Character and p.Character:FindFirstChild("Humanoid")
+		if humanoid then humanoid:Move(dir, relative) end
+	end
+	movControl.moveFunction = function(p, dir, relative)
+		player:Move(dir, relative)
+	end
+end
+
+y()
 end

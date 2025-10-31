@@ -1,0 +1,102 @@
+return function()
+  if not mode then mode="none" end
+	if not wrapvalue then wrapvalue=0 end
+	local frame=Instance.new("Frame")
+	frame.BackgroundColor3=Color3.fromRGB(40,40,40)
+	frame.Size=UDim2.new(0,300,0,50)
+	frame.BackgroundTransparency=0
+	frame.Parent=parent
+	local corner = Instance.new("UICorner",frame)
+	corner.CornerRadius = UDim.new(.4,0)
+	frame.MouseEnter:Connect(function() frame.BackgroundColor3 = Color3.fromRGB(60,60,60) end)
+	frame.MouseLeave:Connect(function() frame.BackgroundColor3 = Color3.fromRGB(40,40,40) end)
+
+	local label=Instance.new("TextLabel")
+	label.Size=UDim2.new(.5,0,1,0)
+	label.BackgroundTransparency=1
+	label.TextColor3=Color3.fromRGB(255,255,255)
+	label.Font=Enum.Font.Gotham
+	label.TextSize=24
+	label.Text=labelText
+	label.Parent=frame
+
+	local bar=Instance.new("Frame")
+	bar.Size=UDim2.new(.5,-20,0,6)
+	bar.Position=UDim2.new(.5,10,.5,2)
+	bar.BackgroundColor3=Color3.fromRGB(171,24,68)
+	bar.BorderSizePixel=0
+	bar.Parent=frame
+	Instance.new("UICorner",bar).CornerRadius=UDim.new(1,0)
+
+	local fill=Instance.new("Frame")
+	fill.Size=UDim2.new(0,0,1,0)
+	fill.BackgroundColor3=Color3.fromRGB(231,84,128)
+	fill.BorderSizePixel=0
+	fill.Parent=bar
+	Instance.new("UICorner",fill).CornerRadius=UDim.new(1,0)
+
+	local knob=Instance.new("Frame")
+	knob.Size=UDim2.new(0,14,0,14)
+	knob.Position=UDim2.new(0,0,.5,-7)
+	knob.BackgroundColor3=Color3.fromRGB(255,105,180)
+	knob.BorderSizePixel=0
+	knob.Parent=bar
+	Instance.new("UICorner",knob).CornerRadius=UDim.new(1,0)
+
+	local valText=Instance.new("TextLabel")
+	valText.Size=UDim2.new(0,40,0,16)
+	valText.AnchorPoint=Vector2.new(.5,1)
+	valText.Position=UDim2.new(.5,0,0,-4)
+	valText.BackgroundTransparency=1
+	valText.TextColor3=Color3.fromRGB(255,255,255)
+	valText.Font=Enum.Font.Gotham
+	valText.TextSize=18
+	valText.Text=tostring(value)
+	valText.Parent=knob
+
+	local dragging=false
+	local uis=game:GetService("UserInputService")
+
+	local function setValue(x)
+		local px=math.clamp((x-bar.AbsolutePosition.X)/bar.AbsoluteSize.X,0,1)
+		local val=math.floor(min+(max-min)*px)
+		fill.Size=UDim2.new(px,0,1,0)
+		knob.Position=UDim2.new(px,-7,.5,-7)
+		valText.Text=tostring(val)
+		return val
+	end
+
+	bar.InputBegan:Connect(function(i)
+		if i.UserInputType==Enum.UserInputType.MouseButton1 then
+			dragging=true
+			if parent.Parent:IsA("Frame") then
+				parent.Parent.Active=false
+				parent.Parent.Draggable=false
+			end
+			setValue(i.Position.X)
+		end
+	end)
+
+	uis.InputChanged:Connect(function(i)
+		if dragging and i.UserInputType==Enum.UserInputType.MouseMovement then
+			wrapvalue=setValue(i.Position.X)
+			if mode=="fov" then
+				workspace.CurrentCamera.FieldOfView=wrapvalue
+				forceFov=wrapvalue
+			end
+		end
+	end)
+
+	uis.InputEnded:Connect(function(i)
+		if i.UserInputType==Enum.UserInputType.MouseButton1 then
+			dragging=false
+			if parent.Parent:IsA("Frame") then
+				parent.Parent.Active=true
+				parent.Parent.Draggable=true
+			end
+		end
+	end)
+
+	setValue(bar.AbsolutePosition.X+(value-min)/(max-min)*bar.AbsoluteSize.X)
+	return frame
+end

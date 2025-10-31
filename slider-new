@@ -12,7 +12,7 @@ return function(parent,labelText,min,max,value,wrapvalue,mode)
 	frame.MouseLeave:Connect(function() frame.BackgroundColor3 = Color3.fromRGB(40,40,40) end)
 
 	local label=Instance.new("TextLabel")
-	label.Size=UDim2.new(.5,0,1,0)
+	label.Size=UDim2.new(.5,-10,1,0)
 	label.BackgroundTransparency=1
 	label.TextColor3=Color3.fromRGB(255,255,255)
 	label.Font=Enum.Font.Gotham

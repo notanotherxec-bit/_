@@ -22,7 +22,7 @@ return function(parent,labelText,min,max,value,wrapvalue,mode)
 
 	local bar=Instance.new("Frame")
 	bar.Size=UDim2.new(.5,-20,0,6)
-	bar.Position=UDim2.new(.5,10,.5,2)
+	bar.Position=UDim2.new(.5,0,.5,2)
 	bar.BackgroundColor3=Color3.fromRGB(171,24,68)
 	bar.BorderSizePixel=0
 	bar.Parent=frame

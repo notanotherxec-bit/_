@@ -21,6 +21,8 @@ local y = function()
 	movControl.moveFunction = function(p, dir, relative)
 		player:Move(dir, relative)
 	end
+
+	warn("function Y was called")
 end
 
 y()

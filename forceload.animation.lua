@@ -1,5 +1,5 @@
 return function(id)
-  local animId = "rbxassetid://"..id
+  local animId = id
 local animation = Instance.new("Animation")
 animation.AnimationId=animId
 
